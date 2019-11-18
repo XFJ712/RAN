@@ -97,7 +97,6 @@ pdcp_netlink_init(
   int                i;
   int                nb_inst_enb;
   int                nb_inst_ue;
-
   reset_meas(&ip_pdcp_stats_tmp);
   nb_inst_enb = 1;
   nb_inst_ue  = 1;
@@ -141,7 +140,7 @@ pdcp_netlink_init(
      * When the netlink fifo is full, packets are silently dropped, this behaviour
      * should be avoided if we want a reliable link.
      */
-    threadCreate(&pdcp_netlink_thread, pdcp_netlink_thread_fct, (void*)NULL, "PDCP netlink", -1, OAI_PRIORITY_RT_LOW );
+    threadCreate(&pdcp_netlink_thread, pdcp_netlink_thread_fct, (void *)NULL, "PDCP netlink", -1, OAI_PRIORITY_RT_LOW );
   }
 
   return 0;

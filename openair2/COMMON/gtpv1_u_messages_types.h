@@ -131,39 +131,39 @@ typedef struct gtpv1u_enb_data_forwarding_req_s {
 } gtpv1u_enb_data_forwarding_req_t;
 
 typedef struct gtpv1u_enb_data_forwarding_ind_s {
-  uint32_t 				 frame;
-  uint8_t 				 enb_flag;
-  rb_id_t 				 rb_id;
-  uint32_t 				 muip;
-  uint32_t 				 confirmp;
-  uint32_t 				 sdu_size;
-  uint8_t 				 *sdu_p;
-  uint8_t 				 mode;
-  uint16_t     			 rnti;
-  uint8_t      			 module_id;
-  uint8_t 				 eNB_index;
+  uint32_t         frame;
+  uint8_t          enb_flag;
+  rb_id_t          rb_id;
+  uint32_t         muip;
+  uint32_t         confirmp;
+  uint32_t         sdu_size;
+  uint8_t          *sdu_p;
+  uint8_t          mode;
+  uint16_t           rnti;
+  uint8_t            module_id;
+  uint8_t          eNB_index;
 } gtpv1u_enb_data_forwarding_ind_t;
 
 typedef struct gtpv1u_enb_end_marker_req_s {
-	  uint8_t               *buffer;
-	  uint32_t               length;
-	  uint32_t               offset;               ///< start of message offset in buffer
-	  rnti_t                 rnti;
-	  rb_id_t                rab_id;
+  uint8_t               *buffer;
+  uint32_t               length;
+  uint32_t               offset;               ///< start of message offset in buffer
+  rnti_t                 rnti;
+  rb_id_t                rab_id;
 } gtpv1u_enb_end_marker_req_t;
 
 typedef struct gtpv1u_enb_end_marker_ind_s {
-  uint32_t 			 frame;
-  uint8_t 			 enb_flag;
-  rb_id_t 			 rb_id;
-  uint32_t 			 muip;
-  uint32_t 			 confirmp;
-  uint32_t 			 sdu_size;
-  uint8_t 			 *sdu_p;
-  uint8_t 			 mode;
-  uint16_t     			 rnti;
-  uint8_t      			 module_id;
-  uint8_t 			 eNB_index;
+  uint32_t       frame;
+  uint8_t        enb_flag;
+  rb_id_t        rb_id;
+  uint32_t       muip;
+  uint32_t       confirmp;
+  uint32_t       sdu_size;
+  uint8_t        *sdu_p;
+  uint8_t        mode;
+  uint16_t           rnti;
+  uint8_t            module_id;
+  uint8_t        eNB_index;
 } gtpv1u_enb_end_marker_ind_t;
 
 typedef struct {

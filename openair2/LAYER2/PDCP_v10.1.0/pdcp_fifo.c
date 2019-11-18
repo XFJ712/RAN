@@ -111,7 +111,7 @@ int pdcp_fifo_flush_sdus(const protocol_ctxt_t *const  ctxt_pP) {
   int              ret=0;
 
   while ((sdu_p = list_get_head (&pdcp_sdu_list)) != NULL && ((pdcp_data_ind_header_t *)(sdu_p->data))->inst == ctxt_pP->module_id) {
-	  ((pdcp_data_ind_header_t *)(sdu_p->data))->inst = 0;
+    ((pdcp_data_ind_header_t *)(sdu_p->data))->inst = 0;
     int rb_id = ((pdcp_data_ind_header_t *)(sdu_p->data))->rb_id;
     int sizeToWrite= sizeof (pdcp_data_ind_header_t) +
                      ((pdcp_data_ind_header_t *) sdu_p->data)->data_size;
@@ -135,13 +135,14 @@ int pdcp_fifo_flush_sdus(const protocol_ctxt_t *const  ctxt_pP) {
     }  //  PDCP_USE_NETLINK
 
     AssertFatal(ret >= 0,"[PDCP_FIFOS] pdcp_fifo_flush_sdus (errno: %d %s)\n", errno, strerror(errno));
-    
-    #if defined(ENABLE_PDCP_PAYLOAD_DEBUG)
+#if defined(ENABLE_PDCP_PAYLOAD_DEBUG)
     LOG_I(PDCP, "Printing first bytes of PDCP SDU before removing it from the list: \n");
-      for (int i=0; i<30; i++){
-    	  LOG_I(PDCP, "%x", sdu_p->data[i]);
-      }
-    #endif
+
+    for (int i=0; i<30; i++) {
+      LOG_I(PDCP, "%x", sdu_p->data[i]);
+    }
+
+#endif
     list_remove_head (&pdcp_sdu_list);
     free_mem_block (sdu_p, __func__);
     pdcp_nb_sdu_sent ++;
@@ -642,6 +643,7 @@ void pdcp_fifo_read_input_sdus_frompc5s (const protocol_ctxt_t *const  ctxt_pP) 
         break;
     } /* end of switch */
   }/* end of bytes_received > 0 */
+
   if (pc5s_header != NULL) {
     free(pc5s_header);
     pc5s_header = NULL;

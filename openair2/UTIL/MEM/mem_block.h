@@ -51,15 +51,15 @@ typedef struct mem_block_t {
 
 void        *pool_buffer_init (void);
 void        *pool_buffer_clean (void *arg);
-void         free_mem_block (mem_block_t * leP, const char* caller);
-mem_block_t* get_free_mem_block (uint32_t sizeP, const char* caller);
+void         free_mem_block (mem_block_t *leP, const char *caller);
+mem_block_t *get_free_mem_block (uint32_t sizeP, const char *caller);
 mem_block_t *get_free_copy_mem_block (void);
 mem_block_t *get_free_copy_mem_block_up (void);
-mem_block_t *copy_mem_block (mem_block_t * leP, mem_block_t * destP);
+mem_block_t *copy_mem_block (mem_block_t *leP, mem_block_t *destP);
 void         display_mem_load (void);
 
 void         check_mem_area (void);
-void        check_free_mem_block (mem_block_t * leP);
+void        check_free_mem_block (mem_block_t *leP);
 #    define MEM_SCALE MAX_MOBILES_PER_ENB
 // definition of the size of the allocated memory area
 #    define MEM_MNGT_MB0_BLOCK_SIZE     64

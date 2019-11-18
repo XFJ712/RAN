@@ -34,17 +34,15 @@
 //-----------------------------------------------------------------------------
 void
 rlc_um_display_rx_window(
-  const protocol_ctxt_t* const ctxt_pP,
-  rlc_um_entity_t * const rlc_pP
-)
-{
+  const protocol_ctxt_t *const ctxt_pP,
+  rlc_um_entity_t *const rlc_pP
+) {
   unsigned long sn = 0;
   unsigned long end_sn = 0;
   LOG_USEDINLOG_VAR(char,str[4]);
   char          time_out_str[11];
   int           str_index;
   char          color[32];
-
   LOG_T(RLC, "\n");
   LOG_T(RLC, "+-------------------------------------------------------------------------------------------------------+");
   LOG_T(RLC, "\n");
@@ -68,7 +66,6 @@ rlc_um_display_rx_window(
   } else {
     end_sn = RLC_UM_SN_5_BITS_MODULO;
   }
-
 
   for (sn = 0; sn < end_sn; sn++) {
     str[0]    = ' ';
@@ -124,25 +121,21 @@ rlc_um_display_rx_window(
 //-----------------------------------------------------------------------------
 void
 rlc_um_receive (
-  const protocol_ctxt_t* const ctxt_pP,
-  rlc_um_entity_t * const rlc_pP,
-  struct mac_data_ind data_indP)
-{
-
+  const protocol_ctxt_t *const ctxt_pP,
+  rlc_um_entity_t *const rlc_pP,
+  struct mac_data_ind data_indP) {
   mem_block_t        *tb_p             = NULL;
   uint8_t               *first_byte_p     = NULL;
   uint16_t               tb_size_in_bytes = 0;
 
   while ((tb_p = list_remove_head (&data_indP.data))) {
-
     first_byte_p = ((struct mac_tb_ind *) (tb_p->data))->data_ptr;
     tb_size_in_bytes = ((struct mac_tb_ind *) (tb_p->data))->size;
-
     rlc_pP->stat_rx_data_bytes += tb_size_in_bytes;
     rlc_pP->stat_rx_data_pdu   += 1;
 
     if (tb_size_in_bytes > 0) {
-      rlc_um_receive_process_dar (ctxt_pP, rlc_pP, tb_p, (rlc_um_pdu_sn_10_t*)first_byte_p, tb_size_in_bytes);
+      rlc_um_receive_process_dar (ctxt_pP, rlc_pP, tb_p, (rlc_um_pdu_sn_10_t *)first_byte_p, tb_size_in_bytes);
 #if defined(TRACE_RLC_UM_RX)
       LOG_D(RLC, PROTOCOL_RLC_UM_CTXT_FMT" VR(UR)=%03d VR(UX)=%03d VR(UH)=%03d\n",
             PROTOCOL_RLC_UM_CTXT_ARGS(ctxt_pP,rlc_pP),

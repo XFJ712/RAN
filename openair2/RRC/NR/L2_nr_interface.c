@@ -37,7 +37,7 @@
 #include "common/ran_context.h"
 
 #if defined(ENABLE_ITTI)
-# include "intertask_interface.h"
+  #include "intertask_interface.h"
 #endif
 
 #include "NR_MIB.h"
@@ -50,21 +50,17 @@ int8_t mac_rrc_nr_data_req(const module_id_t Mod_idP,
                            const frame_t     frameP,
                            const rb_id_t     Srb_id,
                            const uint8_t     Nb_tb,
-                           uint8_t *const    buffer_pP ){
-
+                           uint8_t *const    buffer_pP ) {
   asn_enc_rval_t enc_rval;
   //SRB_INFO *Srb_info;
   //uint8_t Sdu_size                = 0;
   uint8_t sfn_msb                     = (uint8_t)((frameP>>4)&0x3f);
-  
 #ifdef DEBUG_RRC
   LOG_D(RRC,"[eNB %d] mac_rrc_data_req to SRB ID=%ld\n",Mod_idP,Srb_id);
 #endif
-
   gNB_RRC_INST *rrc;
   rrc_gNB_carrier_data_t *carrier;
   NR_BCCH_BCH_Message_t *mib;
-  
   rrc     = RC.nrrrc[Mod_idP];
   carrier = &rrc->carrier[0];
   mib     = &carrier->mib;
@@ -86,10 +82,7 @@ int8_t mac_rrc_nr_data_req(const module_id_t Mod_idP,
     return(3);
   }
 
-//BCCH SIB1 SIBs
-
-//CCCH
-
+  //BCCH SIB1 SIBs
+  //CCCH
   return(0);
-
 }

@@ -43,11 +43,10 @@
 //-----------------------------------------------------------------------------
 static
 uint32_t pdcp_get_next_count_tx(
-  pdcp_t * const pdcp_pP,
+  pdcp_t *const pdcp_pP,
   const srb_flag_t srb_flagP,
   const uint16_t pdcp_sn
-)
-{
+) {
   uint32_t count;
 
   /* For TX COUNT = TX_HFN << length of SN | pdcp SN */
@@ -63,18 +62,16 @@ uint32_t pdcp_get_next_count_tx(
   }
 
   LOG_D(PDCP, "[OSA] TX COUNT = 0x%08x\n", count);
-
   return count;
 }
 
 //-----------------------------------------------------------------------------
 static
 uint32_t pdcp_get_next_count_rx(
-  pdcp_t * const pdcp_pP,
+  pdcp_t *const pdcp_pP,
   const srb_flag_t srb_flagP,
   const uint32_t hfn,
-  const int sn)
-{
+  const int sn) {
   uint32_t count;
 
   /* For RX COUNT = RX_HFN << length of SN | pdcp SN of received PDU */
@@ -92,7 +89,6 @@ uint32_t pdcp_get_next_count_rx(
   }
 
   LOG_D(PDCP, "[OSA] RX COUNT = 0x%08x\n", count);
-
   return count;
 }
 
@@ -100,25 +96,21 @@ uint32_t pdcp_get_next_count_rx(
 //-----------------------------------------------------------------------------
 int
 pdcp_apply_security(
-  const protocol_ctxt_t* const ctxt_pP,
+  const protocol_ctxt_t *const ctxt_pP,
   pdcp_t        *const pdcp_pP,
   const srb_flag_t     srb_flagP,
   const rb_id_t        rb_id,
   const uint8_t        pdcp_header_len,
   const uint16_t       current_sn,
-  uint8_t       * const pdcp_pdu_buffer,
+  uint8_t        *const pdcp_pdu_buffer,
   const uint16_t      sdu_buffer_size
-)
-{
+) {
   uint8_t *buffer_encrypted = NULL;
   stream_cipher_t encrypt_params;
-
   DevAssert(pdcp_pP != NULL);
   DevAssert(pdcp_pdu_buffer != NULL);
   DevCheck(rb_id < NB_RB_MAX && rb_id >= 0, rb_id, NB_RB_MAX, 0);
-
   VCD_SIGNAL_DUMPER_DUMP_FUNCTION_BY_NAME(VCD_SIGNAL_DUMPER_FUNCTIONS_PDCP_APPLY_SECURITY, VCD_FUNCTION_IN);
-
   encrypt_params.direction  = (pdcp_pP->is_ue == 1) ? SECU_DIRECTION_UPLINK : SECU_DIRECTION_DOWNLINK;
   encrypt_params.bearer     = rb_id - 1;
   encrypt_params.count      = pdcp_get_next_count_tx(pdcp_pP, srb_flagP, current_sn);
@@ -127,50 +119,40 @@ pdcp_apply_security(
   if (srb_flagP) {
     /* SRBs */
     uint8_t *mac_i;
-
     LOG_D(PDCP, "[OSA][RB %ld] %s Applying control-plane security %d \n",
           rb_id, (pdcp_pP->is_ue != 0) ? "UE -> eNB" : "eNB -> UE", pdcp_pP->integrityProtAlgorithm);
-
     encrypt_params.message    = pdcp_pdu_buffer;
     encrypt_params.blength    = (pdcp_header_len + sdu_buffer_size) << 3;
     encrypt_params.key        = pdcp_pP->kRRCint + 16; // + 128;
-
     mac_i = &pdcp_pdu_buffer[pdcp_header_len + sdu_buffer_size];
-
     /* Both header and data parts are integrity protected for
      * control-plane PDUs */
     stream_compute_integrity(pdcp_pP->integrityProtAlgorithm,
                              &encrypt_params,
                              mac_i);
-
     encrypt_params.key = pdcp_pP->kRRCenc;  // + 128  // bit key
   } else {
     LOG_D(PDCP, "[OSA][RB %ld] %s Applying user-plane security\n",
           rb_id, (pdcp_pP->is_ue != 0) ? "UE -> eNB" : "eNB -> UE");
-
     encrypt_params.key = pdcp_pP->kUPenc;//  + 128;
   }
 
   encrypt_params.message    = &pdcp_pdu_buffer[pdcp_header_len];
   encrypt_params.blength    = sdu_buffer_size << 3;
-
   buffer_encrypted = &pdcp_pdu_buffer[pdcp_header_len];
-
   /* Apply ciphering if any requested */
   stream_encrypt(pdcp_pP->cipheringAlgorithm,
                  &encrypt_params,
                  &buffer_encrypted);
-
   VCD_SIGNAL_DUMPER_DUMP_FUNCTION_BY_NAME(VCD_SIGNAL_DUMPER_FUNCTIONS_PDCP_APPLY_SECURITY, VCD_FUNCTION_OUT);
-
   return 0;
 }
 
 //-----------------------------------------------------------------------------
 int
 pdcp_validate_security(
-  const protocol_ctxt_t* const ctxt_pP,
-  pdcp_t         * const pdcp_pP,
+  const protocol_ctxt_t *const ctxt_pP,
+  pdcp_t          *const pdcp_pP,
   const srb_flag_t     srb_flagP,
   const rb_id_t        rb_id,
   const uint8_t        pdcp_header_len,
@@ -178,20 +160,14 @@ pdcp_validate_security(
   const int            sn,
   uint8_t       *const pdcp_pdu_buffer,
   const uint16_t       sdu_buffer_size
-)
-{
+) {
   uint8_t *buffer_decrypted = NULL;
   stream_cipher_t decrypt_params;
-
   DevAssert(pdcp_pP != NULL);
-
   DevAssert(pdcp_pdu_buffer != NULL);
   DevCheck(rb_id < NB_RB_MAX && rb_id >= 0, rb_id, NB_RB_MAX, 0);
-
   VCD_SIGNAL_DUMPER_DUMP_FUNCTION_BY_NAME(VCD_SIGNAL_DUMPER_FUNCTIONS_PDCP_VALIDATE_SECURITY, VCD_FUNCTION_IN);
-
-  buffer_decrypted = (uint8_t*)&pdcp_pdu_buffer[pdcp_header_len];
-
+  buffer_decrypted = (uint8_t *)&pdcp_pdu_buffer[pdcp_header_len];
   decrypt_params.direction  = (pdcp_pP->is_ue == 1) ? SECU_DIRECTION_DOWNLINK : SECU_DIRECTION_UPLINK ;
   decrypt_params.bearer     = rb_id - 1;
   decrypt_params.count      = pdcp_get_next_count_rx(pdcp_pP, srb_flagP, hfn, sn);
@@ -214,6 +190,7 @@ pdcp_validate_security(
                  &decrypt_params,
                  &buffer_decrypted);
 #if !defined(USRP_REC_PLAY)
+
   if (srb_flagP) {
     /* Now check the integrity of the complete PDU */
     decrypt_params.message    = pdcp_pdu_buffer;
@@ -224,18 +201,18 @@ pdcp_validate_security(
                                &decrypt_params,
                                &pdcp_pdu_buffer[sdu_buffer_size]) != 0) {
       MSC_LOG_EVENT(
-    	  (ctxt_pP->enb_flag == ENB_FLAG_YES) ? MSC_PDCP_ENB:MSC_PDCP_UE,
-    	  " Security: failed MAC-I Algo %X UE %"PRIx16" ",
-    	  pdcp_pP->integrityProtAlgorithm,
-    	  ctxt_pP->rnti);
+        (ctxt_pP->enb_flag == ENB_FLAG_YES) ? MSC_PDCP_ENB:MSC_PDCP_UE,
+        " Security: failed MAC-I Algo %X UE %"PRIx16" ",
+        pdcp_pP->integrityProtAlgorithm,
+        ctxt_pP->rnti);
       LOG_E(PDCP, "[OSA][RB %ld] %s failed to validate MAC-I (key %llx) of incoming PDU\n",
-            rb_id, (pdcp_pP->is_ue != 0) ? "UE" : "eNB",((long long unsigned int*)decrypt_params.key)[0]);
+            rb_id, (pdcp_pP->is_ue != 0) ? "UE" : "eNB",((long long unsigned int *)decrypt_params.key)[0]);
       VCD_SIGNAL_DUMPER_DUMP_FUNCTION_BY_NAME(VCD_SIGNAL_DUMPER_FUNCTIONS_PDCP_VALIDATE_SECURITY, VCD_FUNCTION_OUT);
       return -1;
     }
   }
+
 #endif
   VCD_SIGNAL_DUMPER_DUMP_FUNCTION_BY_NAME(VCD_SIGNAL_DUMPER_FUNCTIONS_PDCP_VALIDATE_SECURITY, VCD_FUNCTION_OUT);
-
   return 0;
 }

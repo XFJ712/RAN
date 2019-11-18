@@ -26,19 +26,17 @@
 #include "LAYER2/MAC/mac_extern.h"
 //-----------------------------------------------------------------------------
 void config_req_rlc_tm (
-  const protocol_ctxt_t* const  ctxt_pP,
+  const protocol_ctxt_t *const  ctxt_pP,
   const srb_flag_t  srb_flagP,
-  const rlc_tm_info_t * const config_tmP,
+  const rlc_tm_info_t *const config_tmP,
   const rb_id_t rb_idP,
   const logical_chan_id_t chan_idP
-)
-{
+) {
   rlc_union_t     *rlc_union_p  = NULL;
   rlc_tm_entity_t *rlc_p        = NULL;
   hash_key_t       key          = RLC_COLL_KEY_VALUE(ctxt_pP->module_id, ctxt_pP->rnti, ctxt_pP->enb_flag, rb_idP, srb_flagP);
   hashtable_rc_t   h_rc;
-
-  h_rc = hashtable_get(rlc_coll_p, key, (void**)&rlc_union_p);
+  h_rc = hashtable_get(rlc_coll_p, key, (void **)&rlc_union_p);
 
   if (h_rc == HASH_TABLE_OK) {
     rlc_p = &rlc_union_p->rlc.tm;
@@ -46,7 +44,6 @@ void config_req_rlc_tm (
           PROTOCOL_RLC_TM_CTXT_ARGS(ctxt_pP, rlc_p),
           config_tmP->is_uplink_downlink,
           rb_idP);
-
     rlc_tm_init(ctxt_pP, rlc_p);
     rlc_p->protocol_state = RLC_DATA_TRANSFER_READY_STATE;
     rlc_tm_set_debug_infos(ctxt_pP, rlc_p, srb_flagP, rb_idP, chan_idP);
@@ -60,30 +57,28 @@ void config_req_rlc_tm (
 
 //-----------------------------------------------------------------------------
 void rlc_tm_init (
-  const protocol_ctxt_t* const  ctxt_pP,
-  rlc_tm_entity_t * const rlcP
-)
-{
+  const protocol_ctxt_t *const  ctxt_pP,
+  rlc_tm_entity_t *const rlcP
+) {
   int saved_allocation = rlcP->allocation;
   memset (rlcP, 0, sizeof (struct rlc_tm_entity));
   rlcP->allocation = saved_allocation;
   // TX SIDE
   list_init (&rlcP->pdus_to_mac_layer, NULL);
-
   rlcP->protocol_state    = RLC_NULL_STATE;
   rlcP->nb_sdu            = 0;
   rlcP->next_sdu_index    = 0;
   rlcP->current_sdu_index = 0;
-
   rlcP->output_sdu_size_to_write = 0;
   rlcP->buffer_occupancy  = 0;
-
   // SPARE : not 3GPP
   rlcP->size_input_sdus_buffer = 16;
 
   if ((rlcP->input_sdus_alloc == NULL) && (rlcP->size_input_sdus_buffer > 0)) {
     rlcP->input_sdus_alloc = get_free_mem_block (rlcP->size_input_sdus_buffer * sizeof (void *), __func__);
+
     if(rlcP->input_sdus_alloc == NULL) return;
+
     rlcP->input_sdus = (mem_block_t **) (rlcP->input_sdus_alloc->data);
     memset (rlcP->input_sdus, 0, rlcP->size_input_sdus_buffer * sizeof (void *));
   }
@@ -92,10 +87,9 @@ void rlc_tm_init (
 //-----------------------------------------------------------------------------
 void
 rlc_tm_reset_state_variables (
-  const protocol_ctxt_t* const  ctxt_pP,
-  struct rlc_tm_entity * const rlcP
-)
-{
+  const protocol_ctxt_t *const  ctxt_pP,
+  struct rlc_tm_entity *const rlcP
+) {
   rlcP->output_sdu_size_to_write = 0;
   rlcP->buffer_occupancy = 0;
   rlcP->nb_sdu = 0;
@@ -105,9 +99,8 @@ rlc_tm_reset_state_variables (
 //-----------------------------------------------------------------------------
 void
 rlc_tm_cleanup (
-  rlc_tm_entity_t * const rlcP
-)
-{
+  rlc_tm_entity_t *const rlcP
+) {
   int             index;
   // TX SIDE
   list_free (&rlcP->pdus_to_mac_layer);
@@ -134,22 +127,20 @@ rlc_tm_cleanup (
 
 //-----------------------------------------------------------------------------
 void rlc_tm_configure(
-  const protocol_ctxt_t* const  ctxt_pP,
-  rlc_tm_entity_t * const rlcP,
-  const boolean_t is_uplink_downlinkP)
-{
+  const protocol_ctxt_t *const  ctxt_pP,
+  rlc_tm_entity_t *const rlcP,
+  const boolean_t is_uplink_downlinkP) {
   rlcP->is_uplink_downlink = is_uplink_downlinkP;
   rlc_tm_reset_state_variables (ctxt_pP, rlcP);
 }
 
 //-----------------------------------------------------------------------------
 void rlc_tm_set_debug_infos(
-  const protocol_ctxt_t* const  ctxt_pP,
-  rlc_tm_entity_t * const rlcP,
+  const protocol_ctxt_t *const  ctxt_pP,
+  rlc_tm_entity_t *const rlcP,
   const srb_flag_t  srb_flagP,
   const rb_id_t     rb_idP,
-  const logical_chan_id_t chan_idP) 
-{
+  const logical_chan_id_t chan_idP) {
   rlcP->rb_id      = rb_idP;
   rlcP->channel_id = chan_idP;
 

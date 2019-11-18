@@ -62,39 +62,39 @@
 #define NB_NR_UE_MAC_INST 1
 
 typedef enum {
-    SFN_C_MOD_2_EQ_0, 
-    SFN_C_MOD_2_EQ_1,
-    SFN_C_IMPOSSIBLE
+  SFN_C_MOD_2_EQ_0,
+  SFN_C_MOD_2_EQ_1,
+  SFN_C_IMPOSSIBLE
 } SFN_C_TYPE;
 
 
 /*!\brief Top level UE MAC structure */
 typedef struct {
-  
+
   ////  MAC config
-  NR_DRX_Config_t    	          *drx_Config;
+  NR_DRX_Config_t               *drx_Config;
   NR_SchedulingRequestConfig_t    *schedulingRequestConfig;
-  NR_BSR_Config_t    	          *bsr_Config;
-  NR_TAG_Config_t	          *tag_Config;
-  NR_PHR_Config_t	          *phr_Config;
-  NR_RNTI_Value_t 	          *cs_RNTI;
-  NR_MIB_t 	                  *mib;
-  
+  NR_BSR_Config_t               *bsr_Config;
+  NR_TAG_Config_t           *tag_Config;
+  NR_PHR_Config_t           *phr_Config;
+  NR_RNTI_Value_t             *cs_RNTI;
+  NR_MIB_t                    *mib;
+
   ///     Type0-PDCCH seach space
   fapi_nr_dl_config_dci_dl_pdu_rel15_t type0_pdcch_dci_config;
   uint32_t type0_pdcch_ss_mux_pattern;
   SFN_C_TYPE type0_pdcch_ss_sfn_c;
   uint32_t type0_pdcch_ss_n_c;
   uint32_t type0_pdcch_consecutive_slots;
-  
+
   ///     Random access parameter
   uint16_t ra_rnti;
 
-   //BWP params
+  //BWP params
   NR_BWP_PARMS initial_bwp_dl;
   NR_BWP_PARMS initial_bwp_ul;
 
-  ////	FAPI-like interface message
+  ////  FAPI-like interface message
   fapi_nr_tx_request_t tx_request;
   fapi_nr_ul_config_request_t ul_config_request;
   fapi_nr_dl_config_request_t dl_config_request;
@@ -106,33 +106,33 @@ typedef struct {
 } NR_UE_MAC_INST_t;
 
 typedef enum seach_space_mask_e {
-    type0_pdcch  = 0x1, 
-    type0a_pdcch = 0x2,
-    type1_pdcch  = 0x4, 
-    type2_pdcch  = 0x8,
-    type3_pdcch  = 0x10
+  type0_pdcch  = 0x1,
+  type0a_pdcch = 0x2,
+  type1_pdcch  = 0x4,
+  type2_pdcch  = 0x8,
+  type3_pdcch  = 0x10
 } search_space_mask_t;
 
 typedef enum subcarrier_spacing_e {
-    scs_15kHz  = 0x1,
-    scs_30kHz  = 0x2,
-    scs_60kHz  = 0x4,
-    scs_120kHz = 0x8,
-    scs_240kHz = 0x16
+  scs_15kHz  = 0x1,
+  scs_30kHz  = 0x2,
+  scs_60kHz  = 0x4,
+  scs_120kHz = 0x8,
+  scs_240kHz = 0x16
 } subcarrier_spacing_t;
 
 typedef enum channel_bandwidth_e {
-    bw_5MHz   = 0x1,
-    bw_10MHz  = 0x2,
-    bw_20MHz  = 0x4,
-    bw_40MHz  = 0x8,
-    bw_80MHz  = 0x16,
-    bw_100MHz = 0x32
+  bw_5MHz   = 0x1,
+  bw_10MHz  = 0x2,
+  bw_20MHz  = 0x4,
+  bw_40MHz  = 0x8,
+  bw_80MHz  = 0x16,
+  bw_100MHz = 0x32
 } channel_bandwidth_t;
 
 typedef enum frequency_range_e {
-    FR1 = 0, 
-    FR2
+  FR1 = 0,
+  FR2
 } frequency_range_t;
 
 #define NUM_SLOT_FRAME 10

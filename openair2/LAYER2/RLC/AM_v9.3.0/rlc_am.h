@@ -62,35 +62,35 @@
 
 #define PROTOCOL_RLC_AM_CTXT_FMT PROTOCOL_CTXT_FMT"[%s %02ld]"
 #define PROTOCOL_RLC_AM_CTXT_ARGS(CTXT_Pp, rLC_Pp) PROTOCOL_CTXT_ARGS(CTXT_Pp),\
-          (rLC_Pp->is_data_plane) ? "DRB AM" : "SRB AM",\
-          rLC_Pp->rb_id
+  (rLC_Pp->is_data_plane) ? "DRB AM" : "SRB AM",\
+  rLC_Pp->rb_id
 
 #define PROTOCOL_RLC_AM_MSC_FMT "[RNTI %" PRIx16 " %s %02ld]"
 #define PROTOCOL_RLC_AM_MSC_ARGS(CTXT_Pp, rLC_Pp) \
-        CTXT_Pp->rnti,\
-          (rLC_Pp->is_data_plane) ? "DRB AM" : "SRB AM",\
-          rLC_Pp->rb_id
+  CTXT_Pp->rnti,\
+  (rLC_Pp->is_data_plane) ? "DRB AM" : "SRB AM",\
+  rLC_Pp->rb_id
 
 
 #if defined(TRACE_RLC_MUTEX)
 #define RLC_AM_MUTEX_LOCK(mUTEX, cTXT, rLC) \
-	do {\
-      int pmtl_rc = pthread_mutex_trylock(mUTEX);\
-	  if (pmtl_rc != 0){\
-        if (pmtl_rc == EBUSY) {\
-          MSC_LOG_EVENT((cTXT->enb_flag == ENB_FLAG_YES) ? MSC_RLC_ENB:MSC_RLC_UE,\
-                       "0 " PROTOCOL_RLC_AM_MSC_FMT " Warning try lock %s busy",\
-                       PROTOCOL_RLC_AM_MSC_ARGS(cTXT,rLC),\
-                       #mUTEX);\
-          pthread_mutex_lock(mUTEX);\
-        } else {\
-            MSC_LOG_EVENT((cTXT->enb_flag == ENB_FLAG_YES) ? MSC_RLC_ENB:MSC_RLC_UE,\
-                    "0 " PROTOCOL_RLC_AM_MSC_FMT " Error try lock %s %d",\
-                    PROTOCOL_RLC_AM_MSC_ARGS(cTXT,rLC),\
-                    #mUTEX, pmtl_rc);\
-        }\
+  do {\
+    int pmtl_rc = pthread_mutex_trylock(mUTEX);\
+    if (pmtl_rc != 0){\
+      if (pmtl_rc == EBUSY) {\
+        MSC_LOG_EVENT((cTXT->enb_flag == ENB_FLAG_YES) ? MSC_RLC_ENB:MSC_RLC_UE,\
+                      "0 " PROTOCOL_RLC_AM_MSC_FMT " Warning try lock %s busy",\
+                      PROTOCOL_RLC_AM_MSC_ARGS(cTXT,rLC),\
+                      #mUTEX);\
+        pthread_mutex_lock(mUTEX);\
+      } else {\
+        MSC_LOG_EVENT((cTXT->enb_flag == ENB_FLAG_YES) ? MSC_RLC_ENB:MSC_RLC_UE,\
+                      "0 " PROTOCOL_RLC_AM_MSC_FMT " Error try lock %s %d",\
+                      PROTOCOL_RLC_AM_MSC_ARGS(cTXT,rLC),\
+                      #mUTEX, pmtl_rc);\
       }\
-	} while (0);
+    }\
+  } while (0);
 #else
 #define RLC_AM_MUTEX_LOCK(mUTEX, cTXT, rLC) pthread_mutex_lock(mUTEX)
 #endif
@@ -103,8 +103,8 @@
 * \param[in]  rlc_pP           RLC AM protocol instance pointer.
 */
 void     rlc_am_release (
-                const protocol_ctxt_t* const ctxtP,
-                rlc_am_entity_t * const rlc_pP);
+  const protocol_ctxt_t *const ctxtP,
+  rlc_am_entity_t *const rlc_pP);
 
 /** @addtogroup _rlc_am_init_impl_
 * @{
@@ -120,9 +120,9 @@ void     rlc_am_release (
 */
 void
 config_req_rlc_am (
-  const protocol_ctxt_t* const ctxt_pP,
+  const protocol_ctxt_t *const ctxt_pP,
   const srb_flag_t             srb_flagP,
-  const rlc_am_info_t  *       config_am_pP,
+  const rlc_am_info_t         *config_am_pP,
   const rb_id_t                rb_idP,
   const logical_chan_id_t      chan_idP
 );
@@ -136,11 +136,11 @@ config_req_rlc_am (
 * \param[in]  chan_idP                  Transport channel identifier.
 */
 void config_req_rlc_am_asn1 (
-                const protocol_ctxt_t* const ctxtP,
-                const srb_flag_t srb_flagP,
-                const struct LTE_RLC_Config__am * const config_amP,
-                const rb_id_t rb_idP,
-                const logical_chan_id_t chan_idP);
+  const protocol_ctxt_t *const ctxtP,
+  const srb_flag_t srb_flagP,
+  const struct LTE_RLC_Config__am *const config_amP,
+  const rb_id_t rb_idP,
+  const logical_chan_id_t chan_idP);
 
 /** @} */
 
@@ -206,35 +206,35 @@ void config_req_rlc_am_asn1 (
 * \param[out] stat_timer_status_prohibit_timed_out Number of times the timer "status_prohibit" has timed-out.
 */
 void     rlc_am_stat_req     (
-                const protocol_ctxt_t* const ctxtP,
-                rlc_am_entity_t * const rlc_pP,
-                unsigned int* stat_tx_pdcp_sdu,
-                unsigned int* stat_tx_pdcp_bytes,
-                unsigned int* stat_tx_pdcp_sdu_discarded,
-                unsigned int* stat_tx_pdcp_bytes_discarded,
-                unsigned int* stat_tx_data_pdu,
-                unsigned int* stat_tx_data_bytes,
-                unsigned int* stat_tx_retransmit_pdu_by_status,
-                unsigned int* stat_tx_retransmit_bytes_by_status,
-                unsigned int* stat_tx_retransmit_pdu,
-                unsigned int* stat_tx_retransmit_bytes,
-                unsigned int* stat_tx_control_pdu,
-                unsigned int* stat_tx_control_bytes,
-                unsigned int* stat_rx_pdcp_sdu,
-                unsigned int* stat_rx_pdcp_bytes,
-                unsigned int* stat_rx_data_pdus_duplicate,
-                unsigned int* stat_rx_data_bytes_duplicate,
-                unsigned int* stat_rx_data_pdu,
-                unsigned int* stat_rx_data_bytes,
-                unsigned int* stat_rx_data_pdu_dropped,
-                unsigned int* stat_rx_data_bytes_dropped,
-                unsigned int* stat_rx_data_pdu_out_of_window,
-                unsigned int* stat_rx_data_bytes_out_of_window,
-                unsigned int* stat_rx_control_pdu,
-                unsigned int* stat_rx_control_bytes,
-                unsigned int* stat_timer_reordering_timed_out,
-                unsigned int* stat_timer_poll_retransmit_timed_out,
-                unsigned int* stat_timer_status_prohibit_timed_out);
+  const protocol_ctxt_t *const ctxtP,
+  rlc_am_entity_t *const rlc_pP,
+  unsigned int *stat_tx_pdcp_sdu,
+  unsigned int *stat_tx_pdcp_bytes,
+  unsigned int *stat_tx_pdcp_sdu_discarded,
+  unsigned int *stat_tx_pdcp_bytes_discarded,
+  unsigned int *stat_tx_data_pdu,
+  unsigned int *stat_tx_data_bytes,
+  unsigned int *stat_tx_retransmit_pdu_by_status,
+  unsigned int *stat_tx_retransmit_bytes_by_status,
+  unsigned int *stat_tx_retransmit_pdu,
+  unsigned int *stat_tx_retransmit_bytes,
+  unsigned int *stat_tx_control_pdu,
+  unsigned int *stat_tx_control_bytes,
+  unsigned int *stat_rx_pdcp_sdu,
+  unsigned int *stat_rx_pdcp_bytes,
+  unsigned int *stat_rx_data_pdus_duplicate,
+  unsigned int *stat_rx_data_bytes_duplicate,
+  unsigned int *stat_rx_data_pdu,
+  unsigned int *stat_rx_data_bytes,
+  unsigned int *stat_rx_data_pdu_dropped,
+  unsigned int *stat_rx_data_bytes_dropped,
+  unsigned int *stat_rx_data_pdu_out_of_window,
+  unsigned int *stat_rx_data_bytes_out_of_window,
+  unsigned int *stat_rx_control_pdu,
+  unsigned int *stat_rx_control_bytes,
+  unsigned int *stat_timer_reordering_timed_out,
+  unsigned int *stat_timer_poll_retransmit_timed_out,
+  unsigned int *stat_timer_status_prohibit_timed_out);
 
 /*! \fn void     rlc_am_get_pdus (const protocol_ctxt_t* const ctxtP, void * const rlc_pP)
 * \brief    Request the segmentation of SDUs based on status previously sent by MAC.
@@ -243,8 +243,8 @@ void     rlc_am_stat_req     (
 */
 void
 rlc_am_get_pdus (
-  const protocol_ctxt_t* const ctxt_pP,
-  rlc_am_entity_t * const      rlc_pP
+  const protocol_ctxt_t *const ctxt_pP,
+  rlc_am_entity_t *const      rlc_pP
 );
 
 /*! \fn void rlc_am_rx (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, struct mac_data_ind data_indication)
@@ -253,7 +253,7 @@ rlc_am_get_pdus (
 * \param[in]  rlc_pP           RLC AM protocol instance pointer.
 * \param[in]  data_indication           PDUs from MAC.
 */
-void     rlc_am_rx (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, struct mac_data_ind);
+void     rlc_am_rx (const protocol_ctxt_t *const ctxtP,void *const rlc_pP, struct mac_data_ind);
 
 /*! \fn struct mac_status_resp rlc_am_mac_status_indication (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, uint16_t tbs_sizeP, struct mac_status_ind tx_statusP,const eNB_flag_t enb_flagP)
 * \brief    Request the maximum number of bytes that can be served by RLC instance to MAC and fix the amount of bytes requested by MAC for next RLC transmission.
@@ -264,14 +264,14 @@ void     rlc_am_rx (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, stru
 * \param[in]  enb_flagP        eNB or UE flag indication.
 * \return     The maximum number of bytes that can be served by RLC instance to MAC.
 */
-struct mac_status_resp rlc_am_mac_status_indication (const protocol_ctxt_t* const ctxtP, void * const rlc_pP, uint16_t tbs_sizeP, struct mac_status_ind tx_statusP,const eNB_flag_t enb_flagP);
+struct mac_status_resp rlc_am_mac_status_indication (const protocol_ctxt_t *const ctxtP, void *const rlc_pP, uint16_t tbs_sizeP, struct mac_status_ind tx_statusP,const eNB_flag_t enb_flagP);
 
 /*! \fn void rlc_am_set_nb_bytes_requested_by_mac (void * const            rlc_pP,const tb_size_t         tb_sizeP)
 * \brief    Set available TBS for RLC Tx just before am_mac_data_request. Used for UE only.
 * \param[in]  rlc_pP           RLC AM protocol instance pointer.
 * \param[in]  tb_sizeP         Available Tx Transport Block size in bytes.
 */
-void rlc_am_set_nb_bytes_requested_by_mac (void * const            rlc_pP,const tb_size_t         tb_sizeP);
+void rlc_am_set_nb_bytes_requested_by_mac (void *const            rlc_pP,const tb_size_t         tb_sizeP);
 
 /*! \fn struct mac_data_req rlc_am_mac_data_request (const protocol_ctxt_t* const ctxtP,void * const rlc_pP,const eNB_flag_t   enb_flagP)
 * \brief    Gives PDUs to lower layer MAC.
@@ -280,7 +280,7 @@ void rlc_am_set_nb_bytes_requested_by_mac (void * const            rlc_pP,const 
 * \param[in]  enb_flagP        eNB or UE flag
 * \return     A PDU of the previously requested number of bytes, and the updated maximum number of bytes that can be served by RLC instance to MAC for next RLC transmission.
 */
-struct mac_data_req rlc_am_mac_data_request (const protocol_ctxt_t* const ctxtP,void * const rlc_pP,const eNB_flag_t  enb_flagP);
+struct mac_data_req rlc_am_mac_data_request (const protocol_ctxt_t *const ctxtP,void *const rlc_pP,const eNB_flag_t  enb_flagP);
 
 /*! \fn void     rlc_am_mac_data_indication (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, struct mac_data_ind data_indP)
 * \brief    Receive PDUs from lower layer MAC.
@@ -288,14 +288,14 @@ struct mac_data_req rlc_am_mac_data_request (const protocol_ctxt_t* const ctxtP,
 * \param[in]  rlc_pP           RLC AM protocol instance pointer.
 * \param[in]  data_indP        PDUs from MAC.
 */
-void     rlc_am_mac_data_indication (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, struct mac_data_ind data_indP);
+void     rlc_am_mac_data_indication (const protocol_ctxt_t *const ctxtP,void *const rlc_pP, struct mac_data_ind data_indP);
 
 /*! \fn uint32_t rlc_am_get_buffer_occupancy_in_bytes (const protocol_ctxt_t* const ctxt_pP, rlc_am_entity_t * const      rlc_pP)
 * \brief   Get Tx Buffer Occupancy.
 * \param[in]  ctxt_pP          Running context.
 * \param[in]  rlc_pP           RLC AM protocol instance pointer.
 */
-uint32_t rlc_am_get_buffer_occupancy_in_bytes (const protocol_ctxt_t* const ctxt_pP, rlc_am_entity_t * const      rlc_pP);
+uint32_t rlc_am_get_buffer_occupancy_in_bytes (const protocol_ctxt_t *const ctxt_pP, rlc_am_entity_t *const      rlc_pP);
 
 /*! \fn void     rlc_am_data_req (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, mem_block_t *sduP)
 * \brief    Interface with higher layers, buffer higher layer SDUS for transmission.
@@ -303,6 +303,6 @@ uint32_t rlc_am_get_buffer_occupancy_in_bytes (const protocol_ctxt_t* const ctxt
 * \param[in]  rlc_pP           RLC AM protocol instance pointer.
 * \param[in]  sduP             SDU. (A struct rlc_am_data_req is mapped on sduP->data.)
 */
-void     rlc_am_data_req (const protocol_ctxt_t* const ctxtP,void * const rlc_pP, mem_block_t *sduP);
+void     rlc_am_data_req (const protocol_ctxt_t *const ctxtP,void *const rlc_pP, mem_block_t *sduP);
 /** @} */
 #    endif

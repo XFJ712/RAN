@@ -69,42 +69,47 @@ uint16_t NB_UE_INST = 1;
 
 // dummy functions
 int8_t nr_mac_rrc_data_ind_ue(const module_id_t module_id, const int CC_id, const uint8_t gNB_index,
-                              const int8_t channel, const uint8_t* pduP, const sdu_size_t pdu_len) { return 0; }
+                              const int8_t channel, const uint8_t *pduP, const sdu_size_t pdu_len) {
+  return 0;
+}
 void mac_rlc_data_ind ( const module_id_t         module_idP,
-			const rnti_t              rntiP,
-			const eNB_index_t         eNB_index,
-			const frame_t             frameP,
-			const eNB_flag_t          enb_flagP,
-			const MBMS_flag_t         MBMS_flagP,
-			const logical_chan_id_t   channel_idP,
-			char                     *buffer_pP,
-			const tb_size_t           tb_sizeP,
-			num_tb_t                  num_tbP,
-			crc_t                    *crcs_pP){}
+                        const rnti_t              rntiP,
+                        const eNB_index_t         eNB_index,
+                        const frame_t             frameP,
+                        const eNB_flag_t          enb_flagP,
+                        const MBMS_flag_t         MBMS_flagP,
+                        const logical_chan_id_t   channel_idP,
+                        char                     *buffer_pP,
+                        const tb_size_t           tb_sizeP,
+                        num_tb_t                  num_tbP,
+                        crc_t                    *crcs_pP) {}
 mac_rlc_status_resp_t mac_rlc_status_ind( const module_id_t       module_idP,
-					  const rnti_t            rntiP,
-					  const eNB_index_t       eNB_index,
-					  const frame_t           frameP,
-					  const sub_frame_t 	  subframeP,
-					  const eNB_flag_t        enb_flagP,
-					  const MBMS_flag_t       MBMS_flagP,
-					  const logical_chan_id_t channel_idP,
-					  const tb_size_t         tb_sizeP,
-					  const uint32_t sourceL2Id,
-					  const uint32_t destinationL2Id)
-{mac_rlc_status_resp_t  mac_rlc_status_resp; return mac_rlc_status_resp;}
+    const rnti_t            rntiP,
+    const eNB_index_t       eNB_index,
+    const frame_t           frameP,
+    const sub_frame_t     subframeP,
+    const eNB_flag_t        enb_flagP,
+    const MBMS_flag_t       MBMS_flagP,
+    const logical_chan_id_t channel_idP,
+    const tb_size_t         tb_sizeP,
+    const uint32_t sourceL2Id,
+    const uint32_t destinationL2Id) {
+  mac_rlc_status_resp_t  mac_rlc_status_resp;
+  return mac_rlc_status_resp;
+}
 tbs_size_t mac_rlc_data_req(  const module_id_t       module_idP,
-			      const rnti_t            rntiP,
-			      const eNB_index_t       eNB_index,
-			      const frame_t           frameP,
-			      const eNB_flag_t        enb_flagP,
-			      const MBMS_flag_t       MBMS_flagP,
-			      const logical_chan_id_t channel_idP,
-			      const tb_size_t         tb_sizeP,
-			      char             *buffer_pP,
-			      const uint32_t sourceL2Id,
-			      const uint32_t destinationL2Id )
-{return 0;}
+                              const rnti_t            rntiP,
+                              const eNB_index_t       eNB_index,
+                              const frame_t           frameP,
+                              const eNB_flag_t        enb_flagP,
+                              const MBMS_flag_t       MBMS_flagP,
+                              const logical_chan_id_t channel_idP,
+                              const tb_size_t         tb_sizeP,
+                              char             *buffer_pP,
+                              const uint32_t sourceL2Id,
+                              const uint32_t destinationL2Id ) {
+  return 0;
+}
 int generate_dlsch_header(unsigned char *mac_header,
                           unsigned char num_sdus,
                           unsigned short *sdu_lengths,
@@ -113,18 +118,23 @@ int generate_dlsch_header(unsigned char *mac_header,
                           unsigned short timing_advance_cmd,
                           unsigned char *ue_cont_res_id,
                           unsigned char short_padding,
-                          unsigned short post_padding){return 0;}
-uint64_t get_softmodem_optmask(void) {return 0;}
-int rlc_module_init (void) {return(0);}
+                          unsigned short post_padding) {
+  return 0;
+}
+uint64_t get_softmodem_optmask(void) {
+  return 0;
+}
+int rlc_module_init (void) {
+  return(0);
+}
 void pdcp_layer_init (void) {}
-void nr_ip_over_LTE_DRB_preconfiguration(void){}
+void nr_ip_over_LTE_DRB_preconfiguration(void) {}
 
 // needed for some functions
 uint16_t n_rnti = 0x1234;
 openair0_config_t openair0_cfg[MAX_CARDS];
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   char c;
   int i,sf;
   double SNR, snr0 = -2.0, snr1 = 2.0;
@@ -162,12 +172,8 @@ int main(int argc, char **argv)
   int32_t txlev;
   int start_rb = 0;
   int UE_id =0; // [hna] only works for UE_id = 0 because NUMBER_OF_NR_UE_MAX is set to 1 (phy_init_nr_gNB causes segmentation fault)
-
   cpuf = get_cpu_freq_GHz();
-
-
   UE_nr_rxtx_proc_t UE_proc;
-
 
   if ( load_configmodule(argc,argv,CONFIG_ENABLECMDLINEONLY) == 0 ) {
     exit_fun("[NR_ULSIM] Error, configuration module init failed\n");
@@ -178,11 +184,9 @@ int main(int argc, char **argv)
 
   while ((c = getopt(argc, argv, "d:f:g:h:i:j:l:m:n:p:r:s:y:z:F:M:N:P:R:S:L:")) != -1) {
     switch (c) {
-
       /*case 'd':
         frame_type = 1;
         break;*/
-
       case 'd':
         delay = atoi(optarg);
         break;
@@ -310,8 +314,8 @@ int main(int argc, char **argv)
         input_fd = fopen(optarg, "r");
 
         if (input_fd == NULL) {
-            printf("Problem with filename %s\n", optarg);
-            exit(-1);
+          printf("Problem with filename %s\n", optarg);
+          exit(-1);
         }
 
         break;
@@ -335,39 +339,39 @@ int main(int argc, char **argv)
         printf("Setting SNR1 to %f\n", snr1);
         break;
 
-    case 'L':
-      loglvl = atoi(optarg);
-      break;	
+      case 'L':
+        loglvl = atoi(optarg);
+        break;
 
       default:
-        case 'h':
-          printf("%s -h(elp) -p(extended_prefix) -N cell_id -f output_filename -F input_filename -g channel_model -n n_frames -t Delayspread -s snr0 -S snr1 -x transmission_mode -y TXant -z RXant -i Intefrence0 -j Interference1 -A interpolation_file -C(alibration offset dB) -N CellId\n", argv[0]);
-          //printf("-d Use TDD\n");
-          printf("-d Introduce delay in terms of number of samples\n");
-          printf("-f Number of frames to simulate\n");
-          printf("-g [A,B,C,D,E,F,G] Use 3GPP SCM (A,B,C,D) or 36-101 (E-EPA,F-EVA,G-ETU) models (ignores delay spread and Ricean factor)\n");
-          printf("-h This message\n");
-          //printf("-i Relative strength of first intefering eNB (in dB) - cell_id mod 3 = 1\n");
-          //printf("-j Relative strength of second intefering eNB (in dB) - cell_id mod 3 = 2\n");
-          printf("-s Starting SNR, runs from SNR0 to SNR0 + 10 dB if ending SNR isn't given\n");
-          printf("-m MCS value\n");
-          printf("-n Number of trials to simulate\n");
-          printf("-p Use extended prefix mode\n");
-          printf("-t Delay spread for multipath channel\n");
-          //printf("-x Transmission mode (1,2,6 for the moment)\n");
-          printf("-y Number of TX antennas used in eNB\n");
-          printf("-z Number of RX antennas used in UE\n");
-
-          printf("-A Interpolation_filname Run with Abstraction to generate Scatter plot using interpolation polynomial in file\n");
-          //printf("-C Generate Calibration information for Abstraction (effective SNR adjustment to remove Pe bias w.r.t. AWGN)\n");
-          printf("-F Input filename (.txt format) for RX conformance testing\n");
-          printf("-M Multiple SSB positions in burst\n");
-          printf("-N Nid_cell\n");
-          printf("-O oversampling factor (1,2,4,8,16)\n");
-          printf("-R N_RB_DL\n");
-          printf("-S Ending SNR, runs from SNR0 to SNR1\n");
-          exit(-1);
-          break;
+      case 'h':
+        printf("%s -h(elp) -p(extended_prefix) -N cell_id -f output_filename -F input_filename -g channel_model -n n_frames -t Delayspread -s snr0 -S snr1 -x transmission_mode -y TXant -z RXant -i Intefrence0 -j Interference1 -A interpolation_file -C(alibration offset dB) -N CellId\n",
+               argv[0]);
+        //printf("-d Use TDD\n");
+        printf("-d Introduce delay in terms of number of samples\n");
+        printf("-f Number of frames to simulate\n");
+        printf("-g [A,B,C,D,E,F,G] Use 3GPP SCM (A,B,C,D) or 36-101 (E-EPA,F-EVA,G-ETU) models (ignores delay spread and Ricean factor)\n");
+        printf("-h This message\n");
+        //printf("-i Relative strength of first intefering eNB (in dB) - cell_id mod 3 = 1\n");
+        //printf("-j Relative strength of second intefering eNB (in dB) - cell_id mod 3 = 2\n");
+        printf("-s Starting SNR, runs from SNR0 to SNR0 + 10 dB if ending SNR isn't given\n");
+        printf("-m MCS value\n");
+        printf("-n Number of trials to simulate\n");
+        printf("-p Use extended prefix mode\n");
+        printf("-t Delay spread for multipath channel\n");
+        //printf("-x Transmission mode (1,2,6 for the moment)\n");
+        printf("-y Number of TX antennas used in eNB\n");
+        printf("-z Number of RX antennas used in UE\n");
+        printf("-A Interpolation_filname Run with Abstraction to generate Scatter plot using interpolation polynomial in file\n");
+        //printf("-C Generate Calibration information for Abstraction (effective SNR adjustment to remove Pe bias w.r.t. AWGN)\n");
+        printf("-F Input filename (.txt format) for RX conformance testing\n");
+        printf("-M Multiple SSB positions in burst\n");
+        printf("-N Nid_cell\n");
+        printf("-O oversampling factor (1,2,4,8,16)\n");
+        printf("-R N_RB_DL\n");
+        printf("-S Ending SNR, runs from SNR0 to SNR1\n");
+        exit(-1);
+        break;
     }
   }
 
@@ -393,29 +397,23 @@ int main(int argc, char **argv)
   RC.gNB[0][0] = malloc(sizeof(PHY_VARS_gNB));
   gNB = RC.gNB[0][0];
   //gNB_config = &gNB->gNB_config;
-
   frame_parms = &gNB->frame_parms; //to be initialized I suppose (maybe not necessary for PBCH)
   frame_parms->nb_antennas_tx = n_tx;
   frame_parms->nb_antennas_rx = n_rx;
   frame_parms->N_RB_DL = N_RB_DL;
   frame_parms->N_RB_UL = N_RB_UL;
   frame_parms->Ncp = extended_prefix_flag ? EXTENDED : NORMAL;
-
   crcTableInit();
-
   nr_phy_config_request_sim(gNB, N_RB_DL, N_RB_UL, mu, Nid_cell, SSB_positions);
-
   phy_init_nr_gNB(gNB, 0, 0);
   //init_eNB_afterRU();
-
   frame_length_complex_samples = frame_parms->samples_per_subframe;
   //frame_length_complex_samples_no_prefix = frame_parms->samples_per_subframe_wCP;
-
   //configure UE
   UE = malloc(sizeof(PHY_VARS_NR_UE));
-  memset((void*)UE,0,sizeof(PHY_VARS_NR_UE));
-  PHY_vars_UE_g = malloc(sizeof(PHY_VARS_NR_UE**));
-  PHY_vars_UE_g[0] = malloc(sizeof(PHY_VARS_NR_UE*));
+  memset((void *)UE,0,sizeof(PHY_VARS_NR_UE));
+  PHY_vars_UE_g = malloc(sizeof(PHY_VARS_NR_UE **));
+  PHY_vars_UE_g[0] = malloc(sizeof(PHY_VARS_NR_UE *));
   PHY_vars_UE_g[0][0] = UE;
   memcpy(&UE->frame_parms, frame_parms, sizeof(NR_DL_FRAME_PARMS));
 
@@ -429,14 +427,12 @@ int main(int argc, char **argv)
   //init_nr_ue_transport(UE, 0);
   for (sf = 0; sf < 2; sf++) {
     for (i = 0; i < 2; i++) {
+      UE->ulsch[sf][0][i] = new_nr_ue_ulsch(N_RB_UL, 8, 0);
 
-        UE->ulsch[sf][0][i] = new_nr_ue_ulsch(N_RB_UL, 8, 0);
-
-        if (!UE->ulsch[sf][0][i]) {
-          printf("Can't get ue ulsch structures\n");
-          exit(-1);
-        }
-
+      if (!UE->ulsch[sf][0][i]) {
+        printf("Can't get ue ulsch structures\n");
+        exit(-1);
+      }
     }
   }
 
@@ -447,45 +443,35 @@ int main(int argc, char **argv)
   uint8_t length_dmrs = 1;
   unsigned char mod_order;
   uint16_t code_rate;
-
   mod_order      = nr_get_Qm_ul(Imcs, 0);
   code_rate      = nr_get_code_rate_ul(Imcs, 0);
   available_bits = nr_get_G(nb_rb, nb_symb_sch, nb_re_dmrs, length_dmrs, mod_order, 1);
   TBS            = nr_compute_tbs(mod_order, code_rate, nb_rb, nb_symb_sch, nb_re_dmrs*length_dmrs, 0, precod_nbr_layers);
-
   NR_gNB_ULSCH_t *ulsch_gNB = gNB->ulsch[UE_id][0];
   //nfapi_nr_ul_config_ulsch_pdu *rel15_ul = &ulsch_gNB->harq_processes[harq_pid]->ulsch_pdu;
   nfapi_nr_ul_tti_request_t     *UL_tti_req  = &gNB->UL_tti_req;
   nfapi_nr_pusch_pdu_t  *pusch_pdu = &UL_tti_req->pdus_list[0].pusch_pdu;
-
   NR_UE_ULSCH_t **ulsch_ue = UE->ulsch[0][0];
-  
   unsigned char *estimated_output_bit;
   unsigned char *test_input_bit;
   uint32_t errors_decoding   = 0;
   uint32_t errors_scrambling = 0;
   uint32_t is_frame_in_error = 0;
-
   test_input_bit       = (unsigned char *) malloc16(sizeof(unsigned char) * 16 * 68 * 384);
   estimated_output_bit = (unsigned char *) malloc16(sizeof(unsigned char) * 16 * 68 * 384);
-
   nr_scheduled_response_t scheduled_response;
   fapi_nr_ul_config_request_t ul_config;
-  
   printf("\n");
 
   for (SNR = snr0; SNR < snr1; SNR += snr_step) {
-
     printf("-------------------\n");
     printf("SNR %f\n", SNR);
     printf("-------------------\n");
-
     is_frame_in_error = 0;
-    for (int frame = 0; frame < number_of_frames; frame++) {
 
+    for (int frame = 0; frame < number_of_frames; frame++) {
       UE_proc.nr_tti_tx = slot;
       UE_proc.frame_tx = frame;
-
       // --------- setting parameters for gNB --------
       /*
       rel15_ul->rnti                           = n_rnti;
@@ -500,22 +486,20 @@ int main(int argc, char **argv)
       rel15_ul->ulsch_pdu_rel15.rv             = 0;
       rel15_ul->ulsch_pdu_rel15.ndi            = 0;
       rel15_ul->ulsch_pdu_rel15.n_layers       = precod_nbr_layers;
-      rel15_ul->ulsch_pdu_rel15.R              = code_rate; 
+      rel15_ul->ulsch_pdu_rel15.R              = code_rate;
       ///////////////////////////////////////////////////
       */
-
       UL_tti_req->sfn = frame;
       UL_tti_req->slot = slot;
       UL_tti_req->n_pdus = 1;
       UL_tti_req->pdus_list[0].pdu_type = NFAPI_NR_UL_CONFIG_PUSCH_PDU_TYPE;
       UL_tti_req->pdus_list[0].pdu_size = sizeof(nfapi_nr_pusch_pdu_t);
       memset(pusch_pdu,0,sizeof(nfapi_nr_pusch_pdu_t));
-      
-      pusch_pdu->pdu_bit_map = PUSCH_PDU_BITMAP_PUSCH_DATA;  
+      pusch_pdu->pdu_bit_map = PUSCH_PDU_BITMAP_PUSCH_DATA;
       pusch_pdu->rnti = n_rnti;
       pusch_pdu->mcs_index = Imcs;
-      pusch_pdu->mcs_table = 0; 
-      pusch_pdu->target_code_rate = nr_get_code_rate_ul(pusch_pdu->mcs_index,pusch_pdu->mcs_table); 
+      pusch_pdu->mcs_table = 0;
+      pusch_pdu->target_code_rate = nr_get_code_rate_ul(pusch_pdu->mcs_index,pusch_pdu->mcs_table);
       pusch_pdu->qam_mod_order = nr_get_Qm_ul(pusch_pdu->mcs_index,pusch_pdu->mcs_table) ;
       pusch_pdu->transform_precoding = 0;
       pusch_pdu->data_scrambling_id = 0;
@@ -524,7 +508,7 @@ int main(int argc, char **argv)
       pusch_pdu->dmrs_config_type = 0;
       pusch_pdu->ul_dmrs_scrambling_id =  0;
       pusch_pdu->scid = 0;
-      pusch_pdu->resource_alloc = 1; 
+      pusch_pdu->resource_alloc = 1;
       pusch_pdu->rb_start = start_rb;
       pusch_pdu->rb_size = nb_rb;
       pusch_pdu->vrb_to_prb_mapping = 0;
@@ -536,17 +520,14 @@ int main(int argc, char **argv)
       pusch_pdu->pusch_data.harq_process_id = 0;
       pusch_pdu->pusch_data.new_data_indicator = 0;
       pusch_pdu->pusch_data.tb_size = nr_compute_tbs(pusch_pdu->mcs_index,
-						     pusch_pdu->target_code_rate,
-						     pusch_pdu->rb_size,
-						     pusch_pdu->nr_of_symbols,
-						     nb_re_dmrs*length_dmrs,
-						     0,
-						     pusch_pdu->nrOfLayers = 1);
+                                      pusch_pdu->target_code_rate,
+                                      pusch_pdu->rb_size,
+                                      pusch_pdu->nr_of_symbols,
+                                      nb_re_dmrs*length_dmrs,
+                                      0,
+                                      pusch_pdu->nrOfLayers = 1);
       pusch_pdu->pusch_data.num_cb = 0;
-
-
       // --------- setting parameters for UE --------
-
       scheduled_response.module_id = 0;
       scheduled_response.CC_id = 0;
       scheduled_response.frame = frame;
@@ -554,7 +535,6 @@ int main(int argc, char **argv)
       scheduled_response.dl_config = NULL;
       scheduled_response.ul_config = &ul_config;
       scheduled_response.dl_config = NULL;
-
       ul_config.sfn_slot = slot;
       ul_config.number_pdus = 1;
       ul_config.ul_config_list[0].pdu_type = FAPI_NR_UL_CONFIG_TYPE_PUSCH;
@@ -570,35 +550,25 @@ int main(int argc, char **argv)
       ul_config.ul_config_list[0].ulsch_config_pdu.ulsch_pdu_rel15.harq_process_nbr = harq_pid;
       //there are plenty of other parameters that we don't seem to be using for now. e.g.
       //ul_config.ul_config_list[0].ulsch_config_pdu.ulsch_pdu_rel15.absolute_delta_PUSCH = 0;
-
       // set FAPI parameters for UE, put them in the scheduled response and call
       nr_ue_scheduled_response(&scheduled_response);
-
       /////////////////////////phy_procedures_nr_ue_TX///////////////////////
       ///////////
-
       phy_procedures_nrUE_TX(UE, &UE_proc, gNB_id, 0);
-
       //LOG_M("txsig0.m","txs0", UE->common_vars.txdata[0],frame_length_complex_samples,1,1);
-
       ///////////
       ////////////////////////////////////////////////////
       tx_offset = slot*frame_parms->samples_per_slot;
-
       txlev = signal_energy_amp_shift(&UE->common_vars.txdata[0][tx_offset + 5*frame_parms->ofdm_symbol_size + 4*frame_parms->nb_prefix_samples + frame_parms->nb_prefix_samples0],
-              frame_parms->ofdm_symbol_size + frame_parms->nb_prefix_samples);
-
+                                      frame_parms->ofdm_symbol_size + frame_parms->nb_prefix_samples);
       txlev_float = (double)txlev/(double)AMP; // output of signal_energy is fixed point representation
-
       n_errors = 0;
       n_false_positive = 0;
-
       //AWGN
       sigma_dB = 10*log10(txlev_float)-SNR;
       sigma    = pow(10,sigma_dB/10);
 
       for (trial = 0; trial < n_trials; trial++) {
-
         errors_scrambling  = 0;
         errors_decoding    = 0;
 
@@ -607,19 +577,18 @@ int main(int argc, char **argv)
         //----------------------------------------------------------
         for (i=0; i<frame_length_complex_samples; i++) {
           for (ap=0; ap<frame_parms->nb_antennas_rx; ap++) {
-            ((short*) gNB->common_vars.rxdata[ap])[(2*i) + (delay*2)]   = (((int16_t *)UE->common_vars.txdata[ap])[(i<<1)])   + (int16_t)(sqrt(sigma/2)*gaussdouble(0.0,1.0)*(double)AMP); // convert to fixed point
-            ((short*) gNB->common_vars.rxdata[ap])[2*i+1 + (delay*2)]   = (((int16_t *)UE->common_vars.txdata[ap])[(i<<1)+1]) + (int16_t)(sqrt(sigma/2)*gaussdouble(0.0,1.0)*(double)AMP);
+            ((short *) gNB->common_vars.rxdata[ap])[(2*i) + (delay*2)]   = (((int16_t *)UE->common_vars.txdata[ap])[(i<<1)])   + (int16_t)(sqrt(sigma/2)*gaussdouble(0.0,
+                1.0)*(double)AMP); // convert to fixed point
+            ((short *) gNB->common_vars.rxdata[ap])[2*i+1 + (delay*2)]   = (((int16_t *)UE->common_vars.txdata[ap])[(i<<1)+1]) + (int16_t)(sqrt(sigma/2)*gaussdouble(0.0,1.0)*(double)AMP);
           }
         }
-        ////////////////////////////////////////////////////////////
 
+        ////////////////////////////////////////////////////////////
         //----------------------------------------------------------
         //------------------- gNB phy procedures -------------------
         //----------------------------------------------------------
         phy_procedures_gNB_common_RX(gNB, frame, slot);
-
-	//LOG_M("rxsigF0.m","rxsF0",gNB->common_vars.rxdataF[0],frame_length_complex_samples_no_prefix,1,1);
-
+        //LOG_M("rxsigF0.m","rxsF0",gNB->common_vars.rxdataF[0],frame_length_complex_samples_no_prefix,1,1);
         phy_procedures_gNB_uespec_RX(gNB, frame, slot);
         ////////////////////////////////////////////////////////////
 
@@ -628,12 +597,11 @@ int main(int argc, char **argv)
         //----------------------------------------------------------
 
         for (i = 0; i < available_bits; i++) {
-
           if(((ulsch_ue[0]->g[i] == 0) && (gNB->pusch_vars[UE_id]->llr[i] <= 0)) ||
-             ((ulsch_ue[0]->g[i] == 1) && (gNB->pusch_vars[UE_id]->llr[i] >= 0)))
-          {
+              ((ulsch_ue[0]->g[i] == 1) && (gNB->pusch_vars[UE_id]->llr[i] >= 0))) {
             if(errors_scrambling == 0)
               printf("\x1B[34m" "[frame %d][trial %d]\t1st bit in error in unscrambling = %d\n" "\x1B[0m", frame, trial, i);
+
             errors_scrambling++;
           }
         }
@@ -643,13 +611,13 @@ int main(int argc, char **argv)
         }
 
         for (i = 0; i < TBS; i++) {
-
           estimated_output_bit[i] = (ulsch_gNB->harq_processes[harq_pid]->b[i/8] & (1 << (i & 7))) >> (i & 7);
           test_input_bit[i]       = (ulsch_ue[0]->harq_processes[harq_pid]->b[i/8] & (1 << (i & 7))) >> (i & 7);
 
           if (estimated_output_bit[i] != test_input_bit[i]) {
             if(errors_decoding == 0)
               printf("\x1B[34m""[frame %d][trial %d]\t1st bit in error in decoding     = %d\n" "\x1B[0m", frame, trial, i);
+
             errors_decoding++;
           }
         }
@@ -662,6 +630,7 @@ int main(int argc, char **argv)
           is_frame_in_error = 0;
           break;
         }
+
         ////////////////////////////////////////////////////////////
       } // trial loop
 
@@ -681,7 +650,6 @@ int main(int argc, char **argv)
   }
 
   printf("\n");
-
   free(test_input_bit);
   free(estimated_output_bit);
 
